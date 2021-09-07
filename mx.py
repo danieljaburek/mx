@@ -1381,6 +1381,9 @@ class Dependency(SuiteConstituent):
     def isNativeProject(self):
         return isinstance(self, AbstractNativeProject)
 
+    def onlyBuildOrderDependency(self):
+        return self.isNativeProject()
+
     def isArchivableProject(self):
         return isinstance(self, ArchivableProject)
 
@@ -5346,8 +5349,8 @@ class Distribution(Dependency):
                             abort('Distribution {} depended on by {} (which defines module {}) must be in the "distDependencies" attribute'.format(dep, self, module_name), context=self)
                     deps.append(dep)
             def _preVisit(dst, edge):
-                if edge and edge.src.isNativeProject():
-                    # A native project dependency only denotes a build order dependency
+                if edge and edge.src.onlyBuildOrderDependency():
+                    # A project dependency that only denotes a build order dependency (usually a NativeProject)
                     return False
                 return dst not in excluded and not dst.isJreLibrary() and not dst.isJdkLibrary()
             self.walk_deps(visit=_visit, preVisit=_preVisit)
