@@ -32,6 +32,9 @@ from __future__ import print_function
 
 import sys
 
+# import certifi
+# import ssl 
+
 if sys.version_info < (2, 7):
     major, minor, micro, _, _ = sys.version_info
     raise SystemExit('mx requires python 2.7+, not {0}.{1}.{2}'.format(major, minor, micro))
